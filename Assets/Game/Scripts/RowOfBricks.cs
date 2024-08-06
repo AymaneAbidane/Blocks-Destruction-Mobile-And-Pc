@@ -17,6 +17,14 @@ public class RowOfBricks : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        foreach (var brick in rowOfBricks)
+        {
+            brick.onBrickGetDestroyed -= Brick_onBrickGetDestroyed;
+        }
+    }
+
     private void Brick_onBrickGetDestroyed(object sender, Brick e)
     {
         if (rowOfBricks.Count > 0)

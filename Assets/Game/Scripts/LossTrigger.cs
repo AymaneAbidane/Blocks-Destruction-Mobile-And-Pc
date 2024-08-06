@@ -1,18 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LossTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public event EventHandler onBallReachTheLossTrigger;
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (collision.gameObject.TryGetComponent<Ball>(out Ball ball))
+        {
+            onBallReachTheLossTrigger?.Invoke(this, null);
+        }
     }
 }
