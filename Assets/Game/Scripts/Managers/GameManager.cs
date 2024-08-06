@@ -50,8 +50,9 @@ public class GameManager : MonoBehaviour
 
     private void LossTrigger_onBallReachTheLossTrigger(object sender, EventArgs e)
     {
-
+        Debug.Log("you Losse");
         DisplayMenu(true, "You Losse");
+        Time.timeScale = 0f;
     }
 
     private void Bricks_onAllBricksGetsDestroyed(object sender, EventArgs e)
@@ -71,15 +72,26 @@ public class GameManager : MonoBehaviour
         {
             bricks.onAllBricksGetsDestroyed -= Bricks_onAllBricksGetsDestroyed;
             lossTrigger.onBallReachTheLossTrigger -= LossTrigger_onBallReachTheLossTrigger;
+            HandleGamePlayButtonsUi(false);
+
         }
     }
 
     #region GamePlay Scene Ui Manager
-    private void HandleGamePlayButtonsUi()
+    private void HandleGamePlayButtonsUi(bool sub = true)
     {
-        AddListnerToButton(pauseButton, () => PauseButton());
-        AddListnerToButton(replayButton, () => { SceneManager.LoadScene(SceneManager.GetActiveScene().name); });
-        AddListnerToButton(backToMainMenuButton, () => { SceneManager.LoadScene("MainMenuScene"); });
+        if (sub == true)
+        {
+            AddListnerToButton(pauseButton, () => PauseButton());
+            AddListnerToButton(replayButton, () => { SceneManager.LoadScene(SceneManager.GetActiveScene().name); });
+            AddListnerToButton(backToMainMenuButton, () => { SceneManager.LoadScene("MainMenuScene"); });
+        }
+        else
+        {
+            pauseButton.onClick.RemoveAllListeners();
+            replayButton.onClick.RemoveAllListeners();
+            backToMainMenuButton.onClick.RemoveAllListeners();
+        }
     }
 
     private void PauseButton()
@@ -96,9 +108,8 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1f;
         }
     }
-
-
     #endregion
+
 
     #region MainMenu Scene Ui Manager
     private void HandleMainMenuButtonsUi(bool sub = true)
@@ -115,6 +126,7 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
+
 
     private void AddListnerToButton(Button btn, Action action)
     {
